@@ -35,7 +35,11 @@ class FragmentFavoriteMatch : Fragment(), FavoriteFixtureView {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_fragment_favorite_match, container, false)
     }
-
+    override fun onResume() {
+        super.onResume()
+        lastFixture.clear()
+        showFavorite()
+    }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         progressBar = view.findViewById(R.id.pb_loading)
         swipeRefresh = view.findViewById(R.id.sl_favorite)

@@ -10,6 +10,7 @@ import com.example.akbar.retrofitsample.View.ListTeamView
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.lang.Exception
 
 class ListTeamPresenter(private val call: Call<DetailTeamResponse>,
                         private val listTeamView : ListTeamView,
@@ -27,7 +28,12 @@ class ListTeamPresenter(private val call: Call<DetailTeamResponse>,
                 override fun onResponse(call: Call<DetailTeamResponse>, response: Response<DetailTeamResponse>) {
                     listTeam = response.body()!!.teams
                     listTeamView.showLoading()
-                    listTeamView.showListTeamItem(listTeam)
+                    try {
+                        listTeamView.showListTeamItem(listTeam)
+                    }catch (e: Exception){
+                        Log.d(ContentValues.TAG, "Pindah Fragment")
+                    }
+
                     listTeamView.hideLoading()
                 }
             })

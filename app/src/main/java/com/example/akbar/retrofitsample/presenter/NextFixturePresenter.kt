@@ -10,6 +10,7 @@ import com.example.akbar.retrofitsample.View.NextFixtureView
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.lang.Exception
 
 class NextFixturePresenter(private val call : Call<FixtureResponse>,
                            private val context: Context,
@@ -25,9 +26,17 @@ class NextFixturePresenter(private val call : Call<FixtureResponse>,
                 lastFixture = response!!.body()!!.events
                 Log.d(TAG, response.body().toString())
                 view.showLoading()
-                view.showNextFixtureItem(lastFixture)
+                try {
+                    view.showNextFixtureItem(lastFixture)
+                }catch (e:Exception){
+                    Log.d(TAG, "Pindah Fragment")
+                }
+
                 view.hideLoading()
             }
         })
+    }
+    fun cancelRequest(){
+        call.cancel()
     }
 }

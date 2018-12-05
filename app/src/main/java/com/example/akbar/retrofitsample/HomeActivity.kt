@@ -23,6 +23,8 @@ class HomeActivity : AppCompatActivity() {
         setContentView(R.layout.activity_home)
         progressBar = findViewById(R.id.pb_loading_home)
 
+        bottom_navigation.isClickable=false
+
         bottom_navigation.setOnNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.fixture -> {
@@ -44,6 +46,7 @@ class HomeActivity : AppCompatActivity() {
             true
         }
         bottom_navigation.selectedItemId = R.id.fixture
+
     }
     fun showLoading(){
         progressBar.visibility = VISIBLE

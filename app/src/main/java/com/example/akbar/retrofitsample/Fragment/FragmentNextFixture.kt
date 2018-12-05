@@ -77,6 +77,21 @@ class FragmentNextFixture : Fragment(), NextFixtureView {
         return v
     }
 
+    override fun onPause() {
+        super.onPause()
+        nextFixturePresenter.cancelRequest()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        nextFixturePresenter.cancelRequest()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        nextFixturePresenter.cancelRequest()
+    }
+
     override fun showNextFixtureItem(lastFixture: ArrayList<Fixture>) {
         rvLastFixture.adapter = LastFixtureAdapter(context!!, lastFixture){
             hideLoading()

@@ -30,7 +30,11 @@ class FragmentFavoriteTeam : Fragment(), FavoriteTeamVIew {
     lateinit var favoriteTeamPresenter: FavoriteTeamPresenter
     lateinit var view : FavoriteFixtureView
     var teamFavorite : ArrayList<TeamsFavorite> = arrayListOf()
-
+    override fun onResume() {
+        super.onResume()
+        teamFavorite.clear()
+        showFavorite()
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

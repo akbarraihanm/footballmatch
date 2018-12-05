@@ -1,5 +1,6 @@
 package com.example.akbar.retrofitsample.presenter
 
+import android.content.ContentValues
 import android.content.ContentValues.TAG
 import android.content.Context
 import android.util.Log
@@ -13,6 +14,7 @@ import com.example.akbar.retrofitsample.View.LastFixtureView
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.lang.Exception
 
 class LastFixturePresenter(private val call : Call<FixtureResponse>,
                            private val view : LastFixtureView,
@@ -30,7 +32,7 @@ class LastFixturePresenter(private val call : Call<FixtureResponse>,
 
         call.enqueue(object : Callback<FixtureResponse> {
             override fun onFailure(call: Call<FixtureResponse>?, t: Throwable?) {
-                //Toast.makeText(context,"Gagal fetch last fixture", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context,"Gagal fetch last fixture", Toast.LENGTH_SHORT).show()
                 Log.d(TAG, "Gagal fetch last fixture")
             }
 
@@ -39,7 +41,12 @@ class LastFixturePresenter(private val call : Call<FixtureResponse>,
                 Log.d(TAG, response.body().toString())
                 Log.e("coba", "response")
                 view.showLoading()
-                view.showLastFixtureItem(lastFixture)
+                try {
+                    view.showLastFixtureItem(lastFixture)
+                }catch (e: Exception){
+                    Log.d(ContentValues.TAG, "Pindah Fragment")
+                }
+
                 view.hideLoading()
             }
         })
