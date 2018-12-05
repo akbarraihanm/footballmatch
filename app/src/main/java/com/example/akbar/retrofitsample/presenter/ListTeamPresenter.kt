@@ -14,19 +14,22 @@ import retrofit2.Response
 class ListTeamPresenter(private val call: Call<DetailTeamResponse>,
                         private val listTeamView : ListTeamView,
                         private val context: Context){
+    fun cancelteam(){
+        call.cancel()
+    }
     fun getListTeamItem(){
         var listTeam : ArrayList<DetailTeam>
-        call.enqueue(object : Callback<DetailTeamResponse>{
-            override fun onFailure(call: Call<DetailTeamResponse>, t: Throwable) {
-                Toast.makeText(context,"Gagal fetch list team", Toast.LENGTH_SHORT).show()
-            }
+            call.enqueue(object : Callback<DetailTeamResponse>{
+                override fun onFailure(call: Call<DetailTeamResponse>, t: Throwable) {
+                    Toast.makeText(context,"Gagal fetch list team", Toast.LENGTH_SHORT).show()
+                }
 
-            override fun onResponse(call: Call<DetailTeamResponse>, response: Response<DetailTeamResponse>) {
-                listTeam = response.body()!!.teams
-                listTeamView.showLoading()
-                listTeamView.showListTeamItem(listTeam)
-                listTeamView.hideLoading()
-            }
-        })
+                override fun onResponse(call: Call<DetailTeamResponse>, response: Response<DetailTeamResponse>) {
+                    listTeam = response.body()!!.teams
+                    listTeamView.showLoading()
+                    listTeamView.showListTeamItem(listTeam)
+                    listTeamView.hideLoading()
+                }
+            })
     }
 }

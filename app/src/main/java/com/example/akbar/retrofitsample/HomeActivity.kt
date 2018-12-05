@@ -4,35 +4,52 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
-import com.example.akbar.retrofitsample.Fragment.FragmentFavorite
-import com.example.akbar.retrofitsample.Fragment.FragmentFavoriteMatch
-import com.example.akbar.retrofitsample.Fragment.FragmentFixture
-import com.example.akbar.retrofitsample.Fragment.FragmentListTeam
+import android.view.View.INVISIBLE
+import android.view.View.VISIBLE
+import android.widget.ProgressBar
+import com.example.akbar.retrofitsample.Fragment.*
+import com.example.akbar.retrofitsample.View.LastFixtureView
+import com.example.akbar.retrofitsample.presenter.LastFixturePresenter
 import kotlinx.android.synthetic.main.activity_home.*
 
 class HomeActivity : AppCompatActivity() {
     @SuppressLint("ResourceType")
     private var menuItem: Menu? = null
 
+    lateinit var progressBar: ProgressBar
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
+        progressBar = findViewById(R.id.pb_loading_home)
 
         bottom_navigation.setOnNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.fixture -> {
+                    showLoading()
                     loadFragmentFixture(savedInstanceState)
+                    hideLoading()
                 }
                 R.id.teams -> {
+                    showLoading()
                     loadFragmentListTeam(savedInstanceState)
+                    hideLoading()
                 }
                 R.id.favorites -> {
+                    showLoading()
                     loadFragmentFavorite(savedInstanceState)
+                    hideLoading()
                 }
             }
             true
         }
         bottom_navigation.selectedItemId = R.id.fixture
+    }
+    fun showLoading(){
+        progressBar.visibility = VISIBLE
+    }
+    fun hideLoading(){
+        progressBar.visibility = INVISIBLE
     }
     private fun loadFragmentFixture(savedInstanceState: Bundle?){
         if (savedInstanceState == null) {
@@ -43,7 +60,7 @@ class HomeActivity : AppCompatActivity() {
         }
     }
 
-    private fun loadFragmentFavorite(savedInstanceState: Bundle?){
+    fun loadFragmentFavorite(savedInstanceState: Bundle?){
             if(savedInstanceState == null) {
                 supportFragmentManager
                     .beginTransaction()
@@ -52,7 +69,7 @@ class HomeActivity : AppCompatActivity() {
             }
     }
 
-    private fun loadFragmentListTeam(savedInstanceState: Bundle?){
+    fun loadFragmentListTeam(savedInstanceState: Bundle?){
         if (savedInstanceState == null) {
             supportFragmentManager
                 .beginTransaction()

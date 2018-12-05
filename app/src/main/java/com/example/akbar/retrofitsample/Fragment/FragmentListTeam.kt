@@ -13,6 +13,7 @@ import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
 import android.widget.*
 import com.example.akbar.retrofitsample.Adapter.ListTeamAdapter
+import com.example.akbar.retrofitsample.HomeActivity
 import com.example.akbar.retrofitsample.Model.DetailTeam
 import com.example.akbar.retrofitsample.Model.DetailTeamResponse
 import com.example.akbar.retrofitsample.Model.FixtureResponse
@@ -87,6 +88,26 @@ class FragmentListTeam : Fragment(), ListTeamView {
 
     override fun showLoading() {
         progressBar.visibility = VISIBLE
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        listTeamPresenter.cancelteam()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        listTeamPresenter.cancelteam()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        listTeamPresenter.cancelteam()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        listTeamPresenter.cancelteam()
     }
 
     override fun hideLoading() {

@@ -23,6 +23,13 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import android.support.v7.widget.SearchView
+import com.example.akbar.retrofitsample.HomeActivity
+import kotlinx.android.synthetic.main.activity_home.*
+import android.view.View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+import android.view.View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+import android.view.View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+
+
 
 @Suppress("DEPRECATION")
 class FragmentLastFixture : Fragment(), LastFixtureView {
@@ -36,6 +43,8 @@ class FragmentLastFixture : Fragment(), LastFixtureView {
     lateinit var leagueName : String
     lateinit var svFixture : SearchView
     lateinit var listEvent : ArrayList<Fixture>
+    lateinit var apiInterface: ApiInterface
+    lateinit var call: Call<FixtureResponse>
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -48,8 +57,8 @@ class FragmentLastFixture : Fragment(), LastFixtureView {
         rvLastFixture = v.findViewById(R.id.rv_lastFixture)
         rvLastFixture.layoutManager = LinearLayoutManager(context)
 
-        val apiInterface :ApiInterface = ApiClient.getClient().create(ApiInterface::class.java)
-        val call : Call<FixtureResponse> = apiInterface.getLastFixture()
+        apiInterface = ApiClient.getClient().create(ApiInterface::class.java)
+        call  = apiInterface.getLastFixture()
 
         lastFixturePresenter = LastFixturePresenter(call, this, context!!)
         lastFixturePresenter.getLastFixtureItem()
@@ -72,13 +81,31 @@ class FragmentLastFixture : Fragment(), LastFixtureView {
                 lastFixturePresenter = LastFixturePresenter(call, this@FragmentLastFixture, context)
                 lastFixturePresenter.getLastFixtureItem()
             }
-
         }
 
         return v
     }
 
-//    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onPause() {
+        super.onPause()
+        lastFixturePresenter.cancelrequest()
+    }
+    override fun onDestroy() {
+        super.onDestroy()
+        lastFixturePresenter.cancelrequest()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        lastFixturePresenter.cancelrequest()
+    }
+    override fun onDestroyView() {
+        super.onDestroyView()
+        lastFixturePresenter.cancelrequest()
+
+    }
+
+    //    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 //    }
     override fun showLastFixtureItem(lastFixture: ArrayList<Fixture>) {
         rvLastFixture.adapter = LastFixtureAdapter(context, lastFixture){
@@ -88,9 +115,11 @@ class FragmentLastFixture : Fragment(), LastFixtureView {
 
     override fun showLoading() {
         progressBar.visibility = VISIBLE
+
     }
 
     override fun hideLoading() {
+
         progressBar.visibility = INVISIBLE
     }
     fun searching(query : String){

@@ -18,14 +18,19 @@ class LastFixturePresenter(private val call : Call<FixtureResponse>,
                            private val view : LastFixtureView,
                            private val context: Context?){
     lateinit var objek : FixtureResponse
+
     fun callView(lastFixture: ArrayList<Fixture>){
         view.showLastFixtureItem(lastFixture)
     }
+    fun cancelrequest(){
+        call.cancel()
+    }
     fun getLastFixtureItem(){
         var lastFixture : ArrayList<Fixture>
+
         call.enqueue(object : Callback<FixtureResponse> {
             override fun onFailure(call: Call<FixtureResponse>?, t: Throwable?) {
-                Toast.makeText(context,"Gagal fetch last fixture", Toast.LENGTH_SHORT).show()
+                //Toast.makeText(context,"Gagal fetch last fixture", Toast.LENGTH_SHORT).show()
                 Log.d(TAG, "Gagal fetch last fixture")
             }
 
